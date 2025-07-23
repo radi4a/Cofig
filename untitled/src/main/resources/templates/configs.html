@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Избор на конфигурации</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50, #4ca1af);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        h2 {
+            margin-top: 60px;
+            font-size: 36px;
+            color: #f1f1f1;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 40px;
+            width: 100%;
+            max-width: 700px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        li {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        li:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.35);
+        }
+
+        li b {
+            font-size: 22px;
+            color: #ffd700;
+        }
+
+        li span {
+            color: #e0e0e0;
+        }
+
+        p {
+            font-size: 18px;
+            margin-top: 30px;
+        }
+
+        button {
+            margin-top: 20px;
+            margin-bottom:20px;
+            background-color: #ffffff;
+            color: #2c3e50;
+            border: none;
+            padding: 14px 30px;
+            font-size: 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2c3e50;
+            color: #ffffff;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 600px) {
+            h2 {
+                font-size: 28px;
+            }
+
+            li {
+                padding: 18px;
+            }
+
+            button {
+                padding: 12px 24px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+<h2>Налични конфигурации</h2>
+
+<!-- Форма за избор на конфигурации -->
+<form th:action="@{/pdf}" method="post">
+    <ul th:if="${!#lists.isEmpty(configs)}">
+        <!-- За всяка конфигурация, създаваме чекбокс и показваме нейните данни -->
+        <li th:each="config : ${configs}">
+            <!-- Чекбокс за всяка конфигурация -->
+            <input type="checkbox" th:id="config.name" th:name="selectedConfigs" th:value="${config.name}" />
+            <label th:for="config.name">
+                <b th:text="${config.name}"></b> <br>
+                CPU: <span th:text="${config.cpu}"></span><br>
+                GPU: <span th:text="${config.gpu}"></span><br>
+                STORAGE: <span th:text="${config.storage}"></span><br>
+                RAM: <span th:text="${config.ram}"></span> GB<br><br>
+                <b> Цена: <span th:text="${config.price}"></span> лв.</b><br>
+            </label>
+        </li>
+    </ul>
+
+    <!-- Бутон за изпращане на формата и генериране на PDF за избраните конфигурации -->
+    <button type="submit">⬇ Свали PDF на избраните конфигурации</button>
+</form>
+
+<!-- Бутон за връщане на началната страница -->
+<button type="button" onclick="window.location.href='/'">Назад</button>
+
+</body>
+</html>
